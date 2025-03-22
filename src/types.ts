@@ -3,4 +3,4 @@ export type RowData = { [key: number]: TileData; rowNumber: number };
 
 export type TileData = { terrainType: TerrainType };
 
-type TerrainType = "lake" | "forest" | "swamp" | "desert";
+export type TerrainType = "lake" | "forest" | "swamp" | "desert";
