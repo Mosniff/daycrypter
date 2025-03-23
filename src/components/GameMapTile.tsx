@@ -1,8 +1,9 @@
 import { TileData } from "../types";
+import { StructureIcon } from "./StructureIcon";
 
 type Props = TileData;
 
-export const GameMapTile = ({ terrainType }: Props) => {
+export const GameMapTile = ({ terrainType, structure }: Props) => {
   let terrainTypeColor;
   switch (terrainType) {
     case "lake":
@@ -19,5 +20,11 @@ export const GameMapTile = ({ terrainType }: Props) => {
       break;
   }
 
-  return <div className={`w-12 h-12 border ${terrainTypeColor}`}></div>;
+  return (
+    <div
+      className={`w-12 h-12 border ${terrainTypeColor} flex justify-center items-center`}
+    >
+      {structure && <StructureIcon {...structure} />}
+    </div>
+  );
 };

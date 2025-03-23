@@ -25,6 +25,27 @@ export const generateMap: () => MapData = () => {
     }
   }
 
+  const populatedMapData = populateMap(mapData);
+
+  return populatedMapData;
+};
+
+const populateMap: (mapData: MapData) => MapData = (mapData) => {
+  const randomTiles: number[] = [];
+  while (randomTiles.length < 4) {
+    const pickedIndex = Math.floor(Math.random() * 64);
+    if (
+      mapData[pickedIndex].terrainType != "lake" &&
+      !randomTiles.includes(pickedIndex)
+    ) {
+      randomTiles.push(pickedIndex);
+    }
+  }
+
+  mapData[randomTiles[0]].structure = { color: "red", structure: "pyramid" };
+  mapData[randomTiles[1]].structure = { color: "red", structure: "obelisk" };
+  mapData[randomTiles[2]].structure = { color: "blue", structure: "pyramid" };
+  mapData[randomTiles[3]].structure = { color: "blue", structure: "obelisk" };
   return mapData;
 };
 
