@@ -9,7 +9,7 @@ export const GameMapRow = ({ rowData }: Props) => {
   return (
     <div className="flex">
       {indexes.map((index) => (
-        <GameMapTile {...rowData[index]} />
+        <GameMapTile key={index} {...rowData[index]} />
       ))}
     </div>
   );

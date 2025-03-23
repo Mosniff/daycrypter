@@ -1,4 +1,4 @@
-import { MapData, TerrainType, TileData } from "./types";
+import { Coordinates, MapData, TerrainType, TileData } from "../types";
 
 // Map Generation
 export const generateMap: () => MapData = () => {
@@ -114,19 +114,26 @@ const calculateRowIndex: (index: number) => number = (index) => {
   return rowIndex;
 };
 
-const calculateCoordinates: (index: number) => { x: number; y: number } = (
+const calculateCoordinatesFromIndex: (index: number) => Coordinates = (
   index
 ) => {
   const rowNumber = calculateRowIndex(index);
   return { x: index - rowNumber * 8, y: rowNumber };
 };
 
+const calculateIndexFromCoordinates: (coordinates: Coordinates) => number = (
+  coordinates
+) => {
+  return coordinates.y * 8 + coordinates.x;
+};
+
+// *Diagonals = 2
 const calculateDistanceBetweenTiles: (
   index1: number,
   index2: number
 ) => number = (index1, index2) => {
-  const coordinates1 = calculateCoordinates(index1);
-  const coordinates2 = calculateCoordinates(index2);
+  const coordinates1 = calculateCoordinatesFromIndex(index1);
+  const coordinates2 = calculateCoordinatesFromIndex(index2);
   return (
     Math.abs(coordinates1.x - coordinates2.x) +
     Math.abs(coordinates1.y - coordinates2.y)
@@ -172,4 +179,91 @@ const calculateNearestSeed: (
     answer.terrainType = "desert";
   }
   return answer;
+};
+
+export const grabTilesWithinDistance: (
+  distance: number,
+  mapData: MapData,
+  index: number
+) => MapData = (distance, mapData, index) => {
+  const grabbedTiles: MapData = {};
+  grabbedTiles[index] = mapData[index];
+
+  const requiredCoordinates: Coordinates[] = [];
+  const startingCoordinates = calculateCoordinatesFromIndex(index);
+
+  const coordinatesWithinExactly1 = [
+    { x: startingCoordinates.x - 1, y: startingCoordinates.y },
+    { x: startingCoordinates.x + 1, y: startingCoordinates.y },
+    { x: startingCoordinates.x, y: startingCoordinates.y - 1 },
+    { x: startingCoordinates.x, y: startingCoordinates.y + 1 },
+  ];
+  const coordinatesWithinExactly2 = [
+    { x: startingCoordinates.x - 2, y: startingCoordinates.y },
+    { x: startingCoordinates.x + 2, y: startingCoordinates.y },
+    { x: startingCoordinates.x, y: startingCoordinates.y - 2 },
+    { x: startingCoordinates.x, y: startingCoordinates.y + 2 },
+    { x: startingCoordinates.x - 1, y: startingCoordinates.y - 1 },
+    { x: startingCoordinates.x - 1, y: startingCoordinates.y + 1 },
+    { x: startingCoordinates.x + 1, y: startingCoordinates.y - 1 },
+    { x: startingCoordinates.x + 1, y: startingCoordinates.y + 1 },
+  ];
+  const coordinatesWithinExactly3 = [
+    { x: startingCoordinates.x - 3, y: startingCoordinates.y },
+    { x: startingCoordinates.x + 3, y: startingCoordinates.y },
+    { x: startingCoordinates.x, y: startingCoordinates.y - 3 },
+    { x: startingCoordinates.x, y: startingCoordinates.y + 3 },
+    { x: startingCoordinates.x - 2, y: startingCoordinates.y - 1 },
+    { x: startingCoordinates.x - 2, y: startingCoordinates.y + 1 },
+    { x: startingCoordinates.x + 2, y: startingCoordinates.y - 1 },
+    { x: startingCoordinates.x + 2, y: startingCoordinates.y + 1 },
+    { x: startingCoordinates.x - 1, y: startingCoordinates.y - 2 },
+    { x: startingCoordinates.x - 1, y: startingCoordinates.y + 2 },
+    { x: startingCoordinates.x + 1, y: startingCoordinates.y - 2 },
+    { x: startingCoordinates.x + 1, y: startingCoordinates.y + 2 },
+  ];
+
+  if (distance >= 1) {
+    coordinatesWithinExactly1.forEach((location) => {
+      if (checkIfValidCoordinates(location)) {
+        requiredCoordinates.push(location);
+      }
+    });
+  }
+  if (distance >= 2) {
+    coordinatesWithinExactly2.forEach((location) => {
+      if (checkIfValidCoordinates(location)) {
+        requiredCoordinates.push(location);
+      }
+    });
+  }
+  if (distance >= 3) {
+    coordinatesWithinExactly3.forEach((location) => {
+      if (checkIfValidCoordinates(location)) {
+        requiredCoordinates.push(location);
+      }
+    });
+  }
+
+  requiredCoordinates.forEach((coordinates) => {
+    const grabbedIndex = calculateIndexFromCoordinates(coordinates);
+    grabbedTiles[grabbedIndex] = mapData[grabbedIndex];
+  });
+
+  return grabbedTiles;
+};
+
+const checkIfValidCoordinates: (coordinates: Coordinates) => boolean = (
+  coordinates
+) => {
+  if (
+    coordinates.x >= 0 &&
+    coordinates.x <= 7 &&
+    coordinates.y >= 0 &&
+    coordinates.y <= 7
+  ) {
+    return true;
+  } else {
+    return false;
+  }
 };
