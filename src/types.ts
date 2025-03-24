@@ -1,4 +1,12 @@
-export type MapData = { [key: number]: TileData };
+export type GameData = {
+  mapData: MapData;
+  condition1?: Condition;
+  condition2?: Condition;
+  failed?: boolean;
+};
+export type MapData = {
+  [key: number]: TileData;
+};
 export type RowData = { [key: number]: TileData; rowNumber: number };
 export type TileData = {
   terrainType: TerrainType;

@@ -1,9 +1,4 @@
 import { Coordinates, MapData, TerrainType, TileData } from "../types";
-import {
-  countAcceptableTiles,
-  generateAcceptableConditions,
-  generateCondition,
-} from "./rules";
 
 // Map Generation
 export const generateMap: () => MapData = () => {
@@ -31,8 +26,6 @@ export const generateMap: () => MapData = () => {
   }
 
   const populatedMapData = populateMap(mapData);
-
-  generateAcceptableConditions(mapData);
 
   return populatedMapData;
 };

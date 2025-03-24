@@ -76,7 +76,7 @@ const checkIfStructureColorWithinThreeTiles: (
   requiredStructureColor: StructureColor
 ) => boolean = (mapData, tileIndex, requiredStructureColor) => {
   let answer = false;
-  const tiles = grabTilesWithinDistance(2, mapData, tileIndex);
+  const tiles = grabTilesWithinDistance(3, mapData, tileIndex);
   Object.values(tiles).forEach((tile) => {
     if (tile.structure?.color == requiredStructureColor) {
       answer = true;
@@ -185,7 +185,7 @@ export const generateAcceptableConditions: (mapData: MapData) =>
   while (tries < 100) {
     const condition1 = generateCondition();
     const condition2 = generateCondition();
-    if (countAcceptableTiles(mapData, condition1, condition2) == 2) {
+    if (countAcceptableTiles(mapData, condition1, condition2) == 1) {
       console.log(
         `successful conditions achieved with ${tries + 1} tries`,
         condition1,
@@ -197,5 +197,6 @@ export const generateAcceptableConditions: (mapData: MapData) =>
     }
     tries++;
   }
+  console.log(`finished looping ${tries + 1}`, conditions);
   return conditions;
 };

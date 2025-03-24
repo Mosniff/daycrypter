@@ -1,5 +1,4 @@
-import { generateMap } from "../gameLogic/map";
-import { MapData, RowData } from "../types";
+import { GameData, MapData, RowData } from "../types";
 import { GameMapRow } from "./GameMapRow";
 
 const getRowFromMapData = (mapData: MapData, rowNumber: number) => {
@@ -11,17 +10,22 @@ const getRowFromMapData = (mapData: MapData, rowNumber: number) => {
   return rowData;
 };
 
-export const GameMap = () => {
-  const mapData = generateMap();
+type GameMapProps = {
+  gameData: GameData;
+};
+
+export const GameMap = ({ gameData }: GameMapProps) => {
   const rowNumbers = Array.from({ length: 8 }, (_, index) => index + 1);
   return (
-    <div>
-      {rowNumbers.map((rowNumber) => (
-        <GameMapRow
-          key={rowNumber}
-          rowData={getRowFromMapData(mapData, rowNumber)}
-        />
-      ))}
-    </div>
+    <>
+      <div>
+        {rowNumbers.map((rowNumber) => (
+          <GameMapRow
+            key={rowNumber}
+            rowData={getRowFromMapData(gameData.mapData, rowNumber)}
+          />
+        ))}
+      </div>
+    </>
   );
 };
