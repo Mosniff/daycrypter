@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { GameMap } from "./components/GameMap";
 import { GameData } from "./types";
 import { generateGame } from "./gameLogic/game";
+import { ConditionsBox } from "./components/ConditionsBox";
+import { TerrainKey } from "./components/TerrainKey";
 
 function App() {
   const [gameData, setGameData] = useState<GameData | "failed" | null>(null);
@@ -17,38 +19,13 @@ function App() {
       {gameData && gameData != "failed" && (
         <>
           <GameMap gameData={gameData} />
-
-          {/* Debug */}
-          <div className="flex flex-col justify-start items-start">
-            <div>Conditions Debug: </div>
-            <div>First:</div>
-            <div>must be on {gameData.condition1?.acceptableTerrains}</div>
-            <div>
-              within 1 {gameData.condition1?.requiredTerrainWithinOneTile}
-            </div>
-            <div>
-              within 2{" "}
-              {gameData.condition1?.requiredStructureTypeWithinTwoTiles}
-            </div>
-            <div>
-              within 3{" "}
-              {gameData.condition1?.requiredStructureColorWithinThreeTiles}
-            </div>
-            <div>Second:</div>
-            <div>must be on {gameData.condition2?.acceptableTerrains}</div>
-            <div>
-              within 1 {gameData.condition2?.requiredTerrainWithinOneTile}
-            </div>
-            <div>
-              within 2{" "}
-              {gameData.condition2?.requiredStructureTypeWithinTwoTiles}
-            </div>
-            <div>
-              within 3{" "}
-              {gameData.condition2?.requiredStructureColorWithinThreeTiles}
-            </div>
-          </div>
-          {/* Debug */}
+          <TerrainKey />
+          {gameData.condition1 && gameData.condition2 && (
+            <ConditionsBox
+              condition1={gameData.condition1}
+              condition2={gameData.condition2}
+            />
+          )}
         </>
       )}
     </>

@@ -186,17 +186,10 @@ export const generateAcceptableConditions: (mapData: MapData) =>
     const condition1 = generateCondition();
     const condition2 = generateCondition();
     if (countAcceptableTiles(mapData, condition1, condition2) == 1) {
-      console.log(
-        `successful conditions achieved with ${tries + 1} tries`,
-        condition1,
-        condition2
-      );
-
       conditions = { condition1: condition1, condition2: condition2 };
       tries = 100;
     }
     tries++;
   }
-  console.log(`finished looping ${tries + 1}`, conditions);
   return conditions;
 };
