@@ -85,6 +85,23 @@ const checkIfStructureColorWithinThreeTiles: (
   return answer;
 };
 
+export const grabWinningTileIndex: (
+  mapData: MapData,
+  condition1: Condition,
+  condition2: Condition
+) => number = (mapData, condition1, condition2) => {
+  let index = 9999;
+  Object.keys(mapData).forEach((tileIndex) => {
+    if (
+      checkIfTileMeetsCondition(mapData, parseInt(tileIndex), condition1) &&
+      checkIfTileMeetsCondition(mapData, parseInt(tileIndex), condition2)
+    ) {
+      index = parseInt(tileIndex);
+    }
+  });
+  return index;
+};
+
 export const countAcceptableTiles: (
   mapData: MapData,
   condition1: Condition,

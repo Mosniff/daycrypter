@@ -7,10 +7,23 @@ import { TerrainKey } from "./components/TerrainKey";
 
 function App() {
   const [gameData, setGameData] = useState<GameData | "failed" | null>(null);
+  const [winCount, setWinCount] = useState<number>(0);
   useEffect(() => {
     const generatedGame = generateGame();
     setGameData(generatedGame);
   }, []);
+
+  const onCorrectGuess = () => {
+    setWinCount(winCount + 1);
+    const generatedGame = generateGame();
+    setGameData(generatedGame);
+  };
+
+  const onIncorrectGuess = () => {
+    setWinCount(0);
+    const generatedGame = generateGame();
+    setGameData(generatedGame);
+  };
 
   return (
     <>
@@ -18,7 +31,13 @@ function App() {
       {gameData == "failed" && <div>Game failed, please refresh</div>}
       {gameData && gameData != "failed" && (
         <>
-          <GameMap gameData={gameData} />
+          <div>Win Count: {winCount}</div>
+          {/* <div>{gameData.winningTileIndex}</div> */}
+          <GameMap
+            gameData={gameData}
+            onCorrectGuess={onCorrectGuess}
+            onIncorrectGuess={onIncorrectGuess}
+          />
           <TerrainKey />
           {gameData.condition1 && gameData.condition2 && (
             <ConditionsBox

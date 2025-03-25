@@ -3,6 +3,7 @@ export type GameData = {
   condition1?: Condition;
   condition2?: Condition;
   failed?: boolean;
+  winningTileIndex: number;
 };
 export type MapData = {
   [key: number]: TileData;
@@ -11,6 +12,7 @@ export type RowData = { [key: number]: TileData; rowNumber: number };
 export type TileData = {
   terrainType: TerrainType;
   structure?: StructureData | null;
+  chosenTile?: boolean;
 };
 
 export type Coordinates = { x: number; y: number };

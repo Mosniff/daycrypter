@@ -1,9 +1,17 @@
 import { TileData } from "../types";
 import { StructureIcon } from "./StructureIcon";
 
-type Props = TileData;
+type Props = {
+  tileData: TileData;
+  onClick?: (guessedIndex: number) => void;
+  tileIndex?: number;
+};
 
-export const GameMapTile = ({ terrainType, structure }: Props) => {
+export const GameMapTile = ({
+  tileData: { terrainType, structure },
+  onClick,
+  tileIndex,
+}: Props) => {
   let terrainTypeColor;
   switch (terrainType) {
     case "lake":
@@ -23,6 +31,11 @@ export const GameMapTile = ({ terrainType, structure }: Props) => {
   return (
     <div
       className={`w-12 h-12 border ${terrainTypeColor} flex justify-center items-center`}
+      onClick={() => {
+        if (onClick && (tileIndex || tileIndex === 0)) {
+          onClick(tileIndex);
+        }
+      }}
     >
       {structure && <StructureIcon {...structure} />}
     </div>

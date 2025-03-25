@@ -1,6 +1,6 @@
 import { Condition, GameData } from "../types";
 import { generateMap } from "./map";
-import { generateAcceptableConditions } from "./rules";
+import { generateAcceptableConditions, grabWinningTileIndex } from "./rules";
 
 export const generateGame: () => GameData | "failed" = () => {
   let conditions:
@@ -25,6 +25,11 @@ export const generateGame: () => GameData | "failed" = () => {
       condition1: conditions.condition1,
       condition2: conditions.condition2,
       failed: false,
+      winningTileIndex: grabWinningTileIndex(
+        mapData,
+        conditions.condition1,
+        conditions.condition2
+      ),
     };
     return gameData;
   }
