@@ -12,7 +12,7 @@ export const ConditionDetails = ({
   } else if (requiredStructureTypeWithinTwoTiles) {
     conditionDetails = `within two tiles of ${requiredStructureTypeWithinTwoTiles}`;
   } else if (requiredStructureColorWithinThreeTiles) {
-    conditionDetails = `within three tiles of ${requiredStructureColorWithinThreeTiles}`;
+    conditionDetails = `within three tiles of ${requiredStructureColorWithinThreeTiles} structure`;
   } else {
     conditionDetails = `must be on either ${acceptableTerrains[0]} or ${acceptableTerrains[1]}`;
   }
