@@ -1,4 +1,5 @@
 import { Condition } from "../types";
+import { StructureIcon } from "./StructureIcon";
 
 const terrainColorMapping = {
   lake: "text-blue-300",
@@ -43,9 +44,17 @@ export const ConditionDetails = ({
     conditionDetails = (
       <span>
         within two tiles of{" "}
-        <span className={`text-purple-400 font-semibold`}>
-          {requiredStructureTypeWithinTwoTiles}
-        </span>
+        <div className="flex gap-2 justify-center items-center">
+          <StructureIcon
+            structure={requiredStructureTypeWithinTwoTiles}
+            color="red"
+          />
+          or
+          <StructureIcon
+            structure={requiredStructureTypeWithinTwoTiles}
+            color="blue"
+          />
+        </div>
       </span>
     );
   } else if (requiredStructureColorWithinThreeTiles) {
