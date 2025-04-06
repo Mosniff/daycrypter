@@ -9,15 +9,27 @@ import { Timer } from "./components/Timer";
 function App() {
   const [gameData, setGameData] = useState<GameData | "failed" | null>(null);
   const [winCount, setWinCount] = useState<number>(0);
+  const [highScore, setHighScore] = useState<number>(0);
   useEffect(() => {
     const generatedGame = generateGame();
     setGameData(generatedGame);
+
+    // Get High Scores
+    const highScore = localStorage.getItem("highScore");
+    if (highScore) {
+      setHighScore(parseInt(highScore));
+    }
   }, []);
 
   const onCorrectGuess = () => {
     setWinCount(winCount + 1);
     const generatedGame = generateGame();
     setGameData(generatedGame);
+    if (winCount + 1 > highScore) {
+      setHighScore(winCount + 1);
+      localStorage.setItem("highScore", `${winCount + 1}`);
+    }
+
     startTimer();
   };
 
@@ -71,7 +83,9 @@ function App() {
       {gameData == "failed" && <div>Game failed, please refresh</div>}
       {gameData && gameData != "failed" && (
         <>
-          <div className="text-xl font-semibold">Streak: {winCount}</div>
+          <div className="text-xl font-semibold">
+            High Score: {highScore} | Streak: {winCount}
+          </div>
           <Timer
             TimeLeftInMilliseconds={timeLeft}
             initialTimeLimitInMilliseconds={initialTimeLimitInMilliseconds}
