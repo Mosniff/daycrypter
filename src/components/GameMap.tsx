@@ -34,16 +34,14 @@ export const GameMap = ({
   };
 
   return (
-    <>
-      <div>
-        {rowNumbers.map((rowNumber) => (
-          <GameMapRow
-            key={rowNumber}
-            rowData={getRowFromMapData(gameData.mapData, rowNumber)}
-            onTileClick={guessTile}
-          />
-        ))}
-      </div>
-    </>
+    <div className="flex flex-col items-center">
+      {rowNumbers.map((rowNumber) => (
+        <GameMapRow
+          key={rowNumber}
+          rowData={getRowFromMapData(gameData.mapData, rowNumber)}
+          onTileClick={guessTile}
+        />
+      ))}
+    </div>
   );
 };

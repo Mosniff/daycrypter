@@ -78,34 +78,36 @@ function App() {
   // /Timer
 
   return (
-    <div className="h-full flex flex-col gap-4">
-      {!gameData && <div>Loading...</div>}
-      {gameData == "failed" && <div>Game failed, please refresh</div>}
-      {gameData && gameData != "failed" && (
-        <>
-          <div className="text-xl font-semibold">
-            High Score: {highScore} | Streak: {winCount}
-          </div>
-          <Timer
-            TimeLeftInMilliseconds={timeLeft}
-            initialTimeLimitInMilliseconds={initialTimeLimitInMilliseconds}
-          />
-          <GameMap
-            gameData={gameData}
-            onCorrectGuess={onCorrectGuess}
-            onIncorrectGuess={onIncorrectGuess}
-          />
-          {gameData.condition1 && gameData.condition2 && (
-            <ConditionsBox
-              condition1={gameData.condition1}
-              condition2={gameData.condition2}
+    <div className="h-full flex justify-center">
+      <div className="h-full flex flex-col gap-4 max-w-sm">
+        {!gameData && <div>Loading...</div>}
+        {gameData == "failed" && <div>Game failed, please refresh</div>}
+        {gameData && gameData != "failed" && (
+          <>
+            <div className="text-xl font-semibold">
+              High Score: {highScore} | Streak: {winCount}
+            </div>
+            <Timer
+              TimeLeftInMilliseconds={timeLeft}
+              initialTimeLimitInMilliseconds={initialTimeLimitInMilliseconds}
             />
-          )}
-          <div>
-            <HowToPlay />
-          </div>
-        </>
-      )}
+            <GameMap
+              gameData={gameData}
+              onCorrectGuess={onCorrectGuess}
+              onIncorrectGuess={onIncorrectGuess}
+            />
+            {gameData.condition1 && gameData.condition2 && (
+              <ConditionsBox
+                condition1={gameData.condition1}
+                condition2={gameData.condition2}
+              />
+            )}
+            <div>
+              <HowToPlay />
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }
