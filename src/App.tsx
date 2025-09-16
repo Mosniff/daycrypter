@@ -5,11 +5,14 @@ import { generateGame } from "./gameLogic/game";
 import { ConditionsBox } from "./components/ConditionsBox";
 import { HowToPlay } from "./components/HowToPlay";
 import { Timer } from "./components/Timer";
+import { motion } from "motion/react";
 
 function App() {
   const [gameData, setGameData] = useState<GameData | "failed" | null>(null);
   const [winCount, setWinCount] = useState<number>(0);
   const [highScore, setHighScore] = useState<number>(0);
+  const [flashRed, setFlashRed] = useState(false);
+  const [flashGreen, setFlashGreen] = useState(false);
   useEffect(() => {
     const generatedGame = generateGame();
     setGameData(generatedGame);
@@ -29,7 +32,8 @@ function App() {
       setHighScore(winCount + 1);
       localStorage.setItem("highScore", `${winCount + 1}`);
     }
-
+    setFlashGreen(true);
+    setTimeout(() => setFlashGreen(false), 1000);
     startTimer();
   };
 
@@ -37,6 +41,8 @@ function App() {
     setWinCount(0);
     const generatedGame = generateGame();
     setGameData(generatedGame);
+    setFlashRed(true);
+    setTimeout(() => setFlashRed(false), 1000);
     startTimer();
   };
 
@@ -77,6 +83,16 @@ function App() {
 
   // /Timer
 
+  const getAnimateColor = () => {
+    if (flashRed) {
+      return ["#ff0000", "#ffffffde"];
+    } else if (flashGreen) {
+      return ["#00ff00", "#ffffffde"];
+    } else {
+      return "#ffffffde";
+    }
+  };
+
   return (
     <div className="h-full flex justify-center">
       <div className="h-full flex flex-col gap-4 max-w-sm">
@@ -84,8 +100,19 @@ function App() {
         {gameData == "failed" && <div>Game failed, please refresh</div>}
         {gameData && gameData != "failed" && (
           <>
-            <div className="text-xl font-semibold">
-              High Score: {highScore} | Streak: {winCount}
+            <div className="text-xl font-semibold font-white">
+              High Score: {highScore} |{" "}
+              <motion.span
+                animate={{
+                  color: getAnimateColor(),
+                }}
+                transition={{
+                  duration: 1,
+                  ease: "easeInOut",
+                }}
+              >
+                Streak: {winCount}
+              </motion.span>
             </div>
             <Timer
               TimeLeftInMilliseconds={timeLeft}
